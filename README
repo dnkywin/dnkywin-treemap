@@ -1,0 +1,3 @@
+dnkywin's implementation of an augmented tree map
+
+Similar to stl_map, allows for an augmented function and uses a treap (https://en.wikipedia.org/wiki/Treap) for the underlying structure.
