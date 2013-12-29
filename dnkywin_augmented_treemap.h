@@ -212,6 +212,38 @@ private:
             return __aug( __aug( node_query_left(node->left, key_low), node->value.second ), node_query_right(node->right, key_high));
         }
     }
+    
+    _Treap_Node* lower_bound_node(_KeyType key){
+        _Treap_Node* node = __root;
+        _Treap_Node* par = 0;
+        while (node){
+            par = node;
+            if (__comp(key, node->value.first)) node = node->left;
+            else if (__comp(node->value.first, key)) node = node->right;
+            else{
+                return node;
+            }
+        }
+        if (par==0) return 0;
+        else if (__comp(key, par->value.first)) return par;
+        else return successor(par);
+    }
+    
+    _Treap_Node* upper_bound_node(_KeyType key){
+        _Treap_Node* node = __root;
+        _Treap_Node* par = 0;
+        while (node){
+            par = node;
+            if (__comp(key, node->value.first)) node = node->left;
+            else if (__comp(node->value.first, key)) node = node->right;
+            else{
+                return successor(node);
+            }
+        }
+        if (par==0) return 0;
+        else if (__comp(key, par->value.first)) return par;
+        else return successor(par);
+    }
 
 public:
 
@@ -271,8 +303,7 @@ public:
     }
 
     unsigned long size(){
-        return __tsize;
-    }
+        return __tsize; }
 
     class iterator {
     public:
@@ -315,6 +346,12 @@ public:
     }
     iterator find(_KeyType key){
         return iterator(find_node(key));
+    }
+    iterator lower_bound(_KeyType key){
+        return iterator(lower_bound_node(key));
+    }
+    iterator upper_bound(_KeyType key){
+        return iterator(upper_bound_node(key));
     }
 
 };
